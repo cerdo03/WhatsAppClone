@@ -1,6 +1,7 @@
 package com.example.whatsapp
 
 import android.app.ProgressDialog
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
@@ -52,7 +53,7 @@ class SignUpActivity : AppCompatActivity() {
 //
                     } else {
 
-                        Toast.makeText(this, task.exception.toString(),
+                        Toast.makeText(this, task.exception?.message.toString(),
                             Toast.LENGTH_SHORT).show()
                     }
                 }
@@ -61,6 +62,11 @@ class SignUpActivity : AppCompatActivity() {
             else{
                 Toast.makeText(this,"Enter Credentials",Toast.LENGTH_SHORT).show()
             }
+        }
+
+        binding.AlreadyHaveAccount.setOnClickListener {
+            val intent = Intent(this,SignInActivity::class.java)
+            startActivity(intent)
         }
 
     }
