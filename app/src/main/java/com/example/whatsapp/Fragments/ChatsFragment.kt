@@ -1,60 +1,65 @@
 package com.example.whatsapp.Fragments
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.whatsapp.Adapter.UsersAdapter
+import com.example.whatsapp.Models.Users
 import com.example.whatsapp.R
+import com.example.whatsapp.databinding.FragmentChatsBinding
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.ValueEventListener
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
 
-/**
- * A simple [Fragment] subclass.
- * Use the [ChatsFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
 class ChatsFragment : Fragment() {
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
-        }
-    }
+
+    lateinit var binding: FragmentChatsBinding
+    val list=ArrayList<Users>()
+    lateinit var database:FirebaseDatabase
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?,
     ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_chats, container, false)
-    }
 
-    companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment ChatsFragment.
-         */
-        // TODO: Rename and change types and number of parameters
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            ChatsFragment().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
+        binding = FragmentChatsBinding.inflate(inflater,container,false)
+        database = FirebaseDatabase.getInstance()
+        val adapter = context?.let { UsersAdapter(it,list) }
+
+        binding.chatRecyclerView.adapter = adapter
+        val manager = LinearLayoutManager(context)
+        binding.chatRecyclerView.layoutManager = manager
+        database.reference.child("Users").addValueEventListener(
+            object : ValueEventListener {
+                override fun onDataChange(dataSnapshot: DataSnapshot) {
+                    list.clear()
+                    for(i  in dataSnapshot.children){
+                        val users = i.getValue(Users::class.java)
+                        users?.userId = i.key
+                        if (users != null && !users?.userId.equals(FirebaseAuth.getInstance().uid))  {
+                            list.add(users)
+                        }
+                    }
+                    adapter?.notifyDataSetChanged()
+                }
+
+                override fun onCancelled(databaseError: DatabaseError) {
+                    // Getting Post failed, log a message
+
                 }
             }
+        )
+        // Inflate the layout for this fragment
+        return binding.root
     }
+
+
 }

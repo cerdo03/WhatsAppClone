@@ -32,6 +32,13 @@
             android:textSize="18sp"
             android:textStyle="bold"
             android:textColor="@color/black"/>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/lastMessage"
+            android:paddingTop="2dp"
+            android:paddingBottom="2dp"
+            android:text="Last Message"/>
 
     </LinearLayout>
 
