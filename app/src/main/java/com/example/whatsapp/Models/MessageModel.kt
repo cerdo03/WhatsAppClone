@@ -15,7 +15,7 @@ class MessageModel {
         this.timeStamp = timeStamp
 
     }
-    constructor(uId:String,message:String){
+    constructor(uId:String?,message:String){
         this.uId = uId
         this.message = message
     }
