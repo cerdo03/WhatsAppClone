@@ -7,6 +7,7 @@ import android.view.ContextMenu
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
+import com.example.whatsapp.Adapter.FragmentsAdapter
 import com.example.whatsapp.databinding.ActivityMainBinding
 import com.example.whatsapp.databinding.ActivitySignInBinding
 import com.example.whatsapp.databinding.ActivitySignUpBinding
@@ -23,7 +24,10 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         mAuth = Firebase.auth
+         
 
+        binding.viewPager.adapter = FragmentsAdapter(supportFragmentManager)
+        binding.tabLayout.setupWithViewPager(binding.viewPager)
 
     }
 
