@@ -1,12 +1,14 @@
 package com.example.whatsapp.Adapter
 
 import android.content.Context
+import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.example.whatsapp.ChatDetailActivity
 import com.example.whatsapp.Models.Users
 import com.example.whatsapp.R
 import com.squareup.picasso.Picasso
@@ -29,7 +31,16 @@ class UsersAdapter(private val context: Context,private val list:ArrayList<Users
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val users = list[position]
         Picasso.get().load(users.profilepic).placeholder(R.drawable.avatar3).into(holder.image)
+
         holder.name.text = users.userName
+
+        holder.itemView.setOnClickListener {
+            val intent = Intent(context,ChatDetailActivity::class.java)
+            intent.putExtra("userId",users.userId)
+            intent.putExtra("profilePic",users.profilepic)
+            intent.putExtra("userName",users.userName)
+            context.startActivity(intent)
+        }
 
     }
 
