@@ -7,10 +7,10 @@ import android.view.ContextMenu
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
+import android.widget.FrameLayout
 import com.example.whatsapp.Adapter.FragmentsAdapter
 import com.example.whatsapp.databinding.ActivityMainBinding
-import com.example.whatsapp.databinding.ActivitySignInBinding
-import com.example.whatsapp.databinding.ActivitySignUpBinding
+import com.example.whatsapp.databinding.FragmentChatsBinding
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
@@ -18,6 +18,8 @@ import com.google.firebase.ktx.Firebase
 class MainActivity : AppCompatActivity() {
     lateinit var binding: ActivityMainBinding
     private lateinit var mAuth: FirebaseAuth
+    var setBackground = false
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
@@ -44,8 +46,22 @@ class MainActivity : AppCompatActivity() {
             mAuth.signOut()
             val intent = Intent(this,SignInActivity::class.java)
             startActivity(intent)
+            finish()
 
         }else if(item.itemId == R.id.groupChat){
+
+        }
+        else if(item.itemId == R.id.background){
+            if(!setBackground){
+                val layout = findViewById<FrameLayout>(R.id.chatLayout)
+                layout.background = resources.getDrawable(R.color.lightGrey)
+                setBackground=true
+            }
+            else{
+                val layout = findViewById<FrameLayout>(R.id.chatLayout)
+                layout.background = resources.getDrawable(R.drawable.w2)
+                setBackground=false
+            }
 
         }
         return super.onOptionsItemSelected(item)

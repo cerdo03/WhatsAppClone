@@ -41,8 +41,9 @@ import kotlin.collections.ArrayList
         binding.userName.text = userName
         Picasso.get().load(profilePic).placeholder(R.drawable.avatar3).into(binding.profileImage)
         binding.backArrow.setOnClickListener {
-            val intent = Intent(this,MainActivity::class.java)
-            startActivity(intent)
+//            val intent = Intent(this,MainActivity::class.java)
+//            startActivity(intent)
+            super.onBackPressed()
         }
 
         val msgModels=ArrayList<MessageModel>()
@@ -50,6 +51,7 @@ import kotlin.collections.ArrayList
         binding.chatRecyclerView.adapter=chatAdapter
 
         val manager = LinearLayoutManager(this)
+        manager.reverseLayout = true
         binding.chatRecyclerView.layoutManager = manager
         val senderRoom = senderId + recieverId
         val recieverRoom = recieverId+senderId
@@ -67,6 +69,7 @@ import kotlin.collections.ArrayList
 
 
                     }
+
                     chatAdapter.notifyDataSetChanged()
                 }
 
@@ -91,10 +94,7 @@ import kotlin.collections.ArrayList
                     database.reference.child("chats").child(recieverRoom).push()
                         .setValue(msgModel)
                         .addOnSuccessListener {
-                            database.reference.child("chats").child(senderRoom).push()
-                                .setValue(msgModel).addOnSuccessListener {
 
-                                }
                         }
                 }
 

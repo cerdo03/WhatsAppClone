@@ -23,6 +23,7 @@ import kotlin.collections.ArrayList
 class ChatAdapter(): Adapter<RecyclerView.ViewHolder>(){
     var context: Context? = null
     var messageModel :ArrayList<MessageModel>? = null
+    lateinit var msgModel:MessageModel
     var recId:String? = null
     constructor( context: Context, messageModel: ArrayList<MessageModel>,recId:String?) : this() {
         this.context=context
@@ -51,7 +52,15 @@ class ChatAdapter(): Adapter<RecyclerView.ViewHolder>(){
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-        val msgModel = messageModel?.get(position)
+        val size = messageModel?.size
+
+        if(size!=null){
+             msgModel = messageModel!!.get(size-position-1)
+        }
+        else{
+            msgModel = messageModel!!.get(position)
+        }
+
         if(holder::class.java == SenderViewHolder::class.java){
             (SenderViewHolder(holder.itemView).senderMsg).text = msgModel?.message
             val date = Date(msgModel?.timeStamp!!)

@@ -65,8 +65,9 @@ class SignUpActivity : AppCompatActivity() {
         }
 
         binding.AlreadyHaveAccount.setOnClickListener {
-            val intent = Intent(this,SignInActivity::class.java)
-            startActivity(intent)
+//            val intent = Intent(this,SignInActivity::class.java)
+//            startActivity(intent)
+            super.onBackPressed()
         }
 
     }

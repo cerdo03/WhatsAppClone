@@ -8,7 +8,7 @@ import android.util.Log
 import android.widget.Toast
 import com.example.whatsapp.Models.Users
 import com.example.whatsapp.databinding.ActivitySignInBinding
-import com.example.whatsapp.databinding.ActivitySignUpBinding
+
 import com.google.android.gms.auth.api.identity.BeginSignInRequest
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
@@ -64,6 +64,7 @@ class SignInActivity : AppCompatActivity() {
                     if (task.isSuccessful) {
                         val intent = Intent(this, MainActivity::class.java)
                         startActivity(intent)
+                        finish()
 
                     } else {
                         Toast.makeText(this, task.exception?.message.toString(),
@@ -85,6 +86,7 @@ class SignInActivity : AppCompatActivity() {
         if (mAuth.currentUser != null) {
             val intent = Intent(this, MainActivity::class.java)
             startActivity(intent)
+            finish()
         }
 
         binding.clickSignUp.setOnClickListener {
@@ -98,6 +100,7 @@ class SignInActivity : AppCompatActivity() {
     private fun signInGoogle() {
         val signInIntent: Intent = mGoogleSignInClient.signInIntent
         startActivityForResult(signInIntent, Req_Code)
+
     }
 
     // onActivityResult() function : this is where
